@@ -5,6 +5,7 @@ import br.com.store.userapi.repositories.UserRepository;
 import br.com.store.userapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -40,6 +41,13 @@ public class UserServiceImpl implements UserService {
     public Page< User > search( String searchTerm, int page, int size ) {
         PageRequest pageRequest = PageRequest.of( page, size, Sort.Direction.ASC, PARAMETER_NAME );
         return userRepository.search( searchTerm.toLowerCase(), pageRequest );
+    }
+
+    @Override
+    public Page< User > getAll( int page ) {
+        int size = 10;
+        PageRequest pageRequest = PageRequest.of( page, size, Sort.Direction.ASC, PARAMETER_NAME );
+        return new PageImpl<>( userRepository.findAll(), pageRequest, size );
     }
 
     @Override

@@ -14,6 +14,8 @@ public interface UserService {
 
     Page< User > search( String searchTerm, int page, int size );
 
+    Page< User > getAll( int page );
+
     void delete( String id );
 
     void inactive( String id );
