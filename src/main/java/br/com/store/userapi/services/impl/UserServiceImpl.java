@@ -4,10 +4,15 @@ import br.com.store.userapi.entities.User;
 import br.com.store.userapi.repositories.UserRepository;
 import br.com.store.userapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
+
+    private final static String PARAMETER_NAME = "firstName";
 
     @Autowired
     private UserRepository userRepository;
@@ -29,6 +34,12 @@ public class UserServiceImpl implements UserService {
             return user.get();
         }
         throw new Error( "Not Found" );
+    }
+
+    @Override
+    public Page< User > search( String searchTerm, int page, int size ) {
+        PageRequest pageRequest = PageRequest.of( page, size, Sort.Direction.ASC, PARAMETER_NAME );
+        return userRepository.search( searchTerm.toLowerCase(), pageRequest );
     }
 
     @Override
